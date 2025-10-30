@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Redirecting...</title>
+    <script>
+        // Get URL parameters
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // Get the identifier from URL
+        var identifier = getUrlParameter('identifier') ||
+            getUrlParameter('code') ||
+            getUrlParameter('oauth_identifier');
+
+        console.log('Received identifier:', identifier);
+
+        if (identifier) {
+            // Redirect to mobile app
+            var mobileUrl = 'propserv://auth/callback?identifier=' + encodeURIComponent(identifier);
+            console.log('Redirecting to:', mobileUrl);
+            window.location.href = mobileUrl;
+        } else {
+            console.error('No identifier found in URL');
+            window.location.href = 'propserv://auth/callback?error=no_identifier';
+        }
+    </script>
+</head>
+
+<body>
+    <p>Redirecting to app...</p>
+    <p>If you are not redirected automatically, please make sure your mobile app is installed.</p>
+</body>
+
+</html>
